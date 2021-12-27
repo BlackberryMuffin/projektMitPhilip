@@ -15,5 +15,4 @@ System.out.println(Math.pow(a,b));
 return Math.pow(a,b);
 }
 
-
 }

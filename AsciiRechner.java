@@ -5,12 +5,12 @@ public class AsciiRechner{
      */
     public double berechne(String term){
         double finale=Math.PI;
-        if((term.charAt(0)>48&&term.charAt(0)<57||term.charAt(0)==40)&&(term.charAt(term.length()-1)>48&&term.charAt(term.length()-1)<57||term.charAt(term.length()-1)==41)){
+        if((term.charAt(0)>47&&term.charAt(0)<58||term.charAt(0)==40)&&(term.charAt(term.length()-1)>47&&term.charAt(term.length()-1)<58||term.charAt(term.length()-1)==41)){
             double numbers[]=new double[term.length()/2+1];char operators[]=new char[term.length()-1];int numn=0;int numo=0;int length=0;int b1=0;int b2=0;boolean comma=false;int comm=-1;char x=0;char x1=0;
             for(int i=0;i<term.length();i++){
                 x=term.charAt(i);if(i<term.length()-1)x1=term.charAt(i+1);
-                if(term.charAt(i)>48&&term.charAt(i)<57){
-                    while(term.charAt(i)>48&&term.charAt(i)<57||(term.charAt(i)==44||term.charAt(i)==46)&&(term.charAt(i+1)>48&&term.charAt(i+1)<57)){
+                if(term.charAt(i)>47&&term.charAt(i)<58){
+                    while(term.charAt(i)>47&&term.charAt(i)<58||(term.charAt(i)==44||term.charAt(i)==46)&&(term.charAt(i+1)>47&&term.charAt(i+1)<58)){
                         if((term.charAt(i)==44||term.charAt(i)==46)&&!comma){
                             comma=true;comm=i;}
                         else if(term.charAt(i)==44||term.charAt(i)==46)return Math.PI;
@@ -24,10 +24,10 @@ public class AsciiRechner{
                     for(int j=0;j<length;j++){
                         System.out.print("j="+j+";\ti-j="+i+-j+"\t");
                         if(i-j==comm){System.out.print(0+"\t"+term.charAt(i-j));}
-                        else if(comma&&i-j>comm)  {System.out.print(1+"\t"+term.charAt(i-j));  numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j-comm-1);}
-                        else if(comma&&i-j<comm)  {System.out.print(1+"\t"+term.charAt(i-j));  numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j-comm-2);}
-                        else if(!comma) {System.out.print(1+"\t"+term.charAt(i-j)); numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j);}
-                        System.out.println("\t"+numbers[numn]);
+                        else if(comma&&i-j>comm)  {System.out.print(1+"\t"+term.charAt(i-j));  numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j-comm-2);}
+                        else if(comma&&i-j<comm)  {System.out.print(2+"\t"+term.charAt(i-j));  numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j-comm-3);}
+                        else if(!comma) {System.out.print(3+"\t"+term.charAt(i-j)); numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j);}
+                        System.out.println("\t"+numbers[numn]+"\t"+(term.charAt(i-j)-48)*Math.pow(10,j));
                     }
                     numn++;length=0;comm=-1;comma=false;
                 }
@@ -39,19 +39,23 @@ public class AsciiRechner{
             }
             double numbers1[]=new double[numn];char operators1[]=new char[numo];finale=numbers[0];
             for(int i=0;i<numn;i++){
-            numbers1[i]=numbers[i];}
+                numbers1[i]=numbers[i];}
             for(int i=0;i<numo;i++){
-            operators1[i]=operators[i];}
+                operators1[i]=operators[i];}
+            System.out.print(numbers[0]);
             for(int i=0;i<numo;i++){
-            if(operators1[i]==43)
-            finale+=numbers1[i+1];
-            if(operators1[i]==45)
-            finale-=numbers1[i+1];
+                System.out.print(operators[i]+""+numbers1[i+1]);
+                if(operators1[i]==43)
+                    finale+=numbers1[i+1];
+                if(operators1[i]==45)
+                    finale-=numbers1[i+1];
             }
-            System.out.println(finale+"\n");
-            
+            System.out.println("="+finale+"\n");
+
             return finale;
         }
-        else return finale;
+        else{System.out.println("hi"); return finale;}
     }
+
+    public void print(String hi){System.out.println(hi);}
 }
