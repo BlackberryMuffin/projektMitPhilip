@@ -1,27 +1,117 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class AsciiRechner{
+    
+    /**
+     * Let's start with the simple situation, where there are only integer numbers and no parentheses
+     * Calculation just blindly from left to right
+     */
+    public double berechne2(String term){
+        //split term according to operators
+        char[] ops = new char[]{'+','-','*','/'};
+        List<String> numbers = new ArrayList<>();
+        List<Character> operations = new ArrayList<>();
+        
+        String num = "";
+        for (int i =0;i<term.length();i++){
+            char c = term.charAt(i);
+            boolean isOperator = false;
+            for (char op:ops){
+                if (c==op){
+                    operations.add(c); //save operation
+                    numbers.add(num); //save number
+                    num =""; //reset number
+                    isOperator = true;
+                    break;
+                }
+            }
+            if (!isOperator){
+                num+=c;
+            }
+        }
+        numbers.add(num);
+        
+        
+        //calculation
+        int n = 0;
+        double result = Double.parseDouble(numbers.get(n++));
+        for (Character op: operations){
+            switch(op){
+                case '+':
+                    result+=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '-':
+                    result-=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '*':
+                    result*=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '/':
+                    result/=Double.parseDouble(numbers.get(n++));
+                    break;
+            }
+        }
+
+        //for debugging
+        output(numbers,operations,result);
+        
+        return result;
+    }
+    
+    private void output(List<String> numbers, List<Character> operations,double result){
+        
+        int count = 0;
+        for (String number:numbers){
+            System.out.print(number);
+            if (count<operations.size())
+                System.out.print(operations.get(count++));
+        }
+        System.out.println("="+result);
+        
+    }
+    
+    
     /**
      * Die Implementierung von Wurzeln oder hoch's ist momentan nicht geplant
      * Klammern, division und multiplikation kommen noch, da hatte ich aber noch keine Lust drauf
      */
     public double berechne(String term){
         double finale=Math.PI;
-        if((term.charAt(0)>47&&term.charAt(0)<58||term.charAt(0)==40)&&(term.charAt(term.length()-1)>47&&term.charAt(term.length()-1)<58||term.charAt(term.length()-1)==41)){
-            double numbers[]=new double[term.length()/2+1];char operators[]=new char[term.length()-1];int numn=0;int numo=0;int length=0;int b1=0;int b2=0;boolean comma=false;int comm=-1;char x=0;char x1=0;
+        if(
+        (term.charAt(0)>47&&term.charAt(0)<58||term.charAt(0)==40)&& //digits or opening parenthesis
+        (term.charAt(term.length()-1)>47&&term.charAt(term.length()-1)<58||term.charAt(term.length()-1)==41))//digits or closing parenthesis
+        {
+            double numbers[]=new double[term.length()/2+1]; //create array for a bunch of numbers
+            char operators[]=new char[term.length()-1]; //chreate array for a bunch of operator chars
+            int numn=0;
+            int numo=0;
+            int length=0;
+            int b1=0;
+            int b2=0;
+            boolean comma=false;
+            int comm=-1;
+            char x=0;
+            char x1=0;
             for(int i=0;i<term.length();i++){
-                x=term.charAt(i);if(i<term.length()-1)x1=term.charAt(i+1);
-                if(term.charAt(i)>47&&term.charAt(i)<58){
+                x=term.charAt(i); //ith symbol
+                if(i<term.length()-1)
+                    x1=term.charAt(i+1); //(i+1)th symbol
+                if(term.charAt(i)>47&&term.charAt(i)<58){ //digit
                     while(term.charAt(i)>47&&term.charAt(i)<58||(term.charAt(i)==44||term.charAt(i)==46)&&(term.charAt(i+1)>47&&term.charAt(i+1)<58)){
                         if((term.charAt(i)==44||term.charAt(i)==46)&&!comma){
-                            comma=true;comm=i;}
-                        else if(term.charAt(i)==44||term.charAt(i)==46)return Math.PI;
-                        length++;
+                            comma=true;comm=i;} //save the position of the decimal point
+                        else if(term.charAt(i)==44||term.charAt(i)==46)
+                            return Math.PI; //complain stupid input
+                        length++; //keep track of the length of the number
                         if(i<term.length()-1)
                             i++;
                         else break;
                     }
-                    if(i+1<term.length()||term.charAt(i)==41)
-                        i--;System.out.println(comm+"\t"+i);
-                    for(int j=0;j<length;j++){
+                    if(i+1<term.length()||term.charAt(i)==41) //detect closing parenthesis
+                        i--;
+                    System.out.println(comm+"\t"+i); //some output for debugging
+                    for(int j=0;j<length;j++){ //at this point I give up, it is too complicated. Let's start simpler!!!
                         System.out.print("j="+j+";\ti-j="+i+-j+"\t");
                         if(i-j==comm){System.out.print(0+"\t"+term.charAt(i-j));}
                         else if(comma&&i-j>comm)  {System.out.print(1+"\t"+term.charAt(i-j));  numbers[numn]+=(term.charAt(i-j)-48)*Math.pow(10,j-comm-2);}
