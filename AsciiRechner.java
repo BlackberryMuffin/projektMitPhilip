@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class AsciiRechner{
     /**
      * Die Implementierung von Wurzeln oder hoch's ist momentan nicht geplant
@@ -56,6 +59,74 @@ public class AsciiRechner{
         }
         else{System.out.println("hi"); return finale;}
     }
+
+  
+
+    public double berechne2(String term){
+        //split term according to operators
+        char[] ops = new char[]{'+','-','*','/'};
+        List<String> numbers = new ArrayList<>();
+        List<Character> operations = new ArrayList<>();
+        
+        String num = "";
+        for (int i =0;i<term.length();i++){
+            char c = term.charAt(i);
+            boolean isOperator = false;
+            for (char op:ops){
+                if (c==op){
+                    operations.add(c); //save operation
+                    numbers.add(num); //save number
+                    num =""; //reset number
+                    isOperator = true;
+                    break;
+                }
+            }
+            if (!isOperator){
+                num+=c;
+            }
+        }
+        numbers.add(num);
+        
+        
+        //calculation
+        int n = 0;
+        double result = Double.parseDouble(numbers.get(n++));
+        for (Character op: operations){
+            switch(op){
+                case '+':
+                    result+=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '-':
+                    result-=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '*':
+                    result*=Double.parseDouble(numbers.get(n++));
+                    break;
+                case '/':
+                    result/=Double.parseDouble(numbers.get(n++));
+                    break;
+            }
+        }
+
+        //for debugging
+        output(numbers,operations,result);
+        
+        return result;
+    }
+    
+    private void output(List<String> numbers, List<Character> operations,double result){
+        
+        int count = 0;
+        for (String number:numbers){
+            System.out.print(number);
+            if (count<operations.size())
+                System.out.print(operations.get(count++));
+        }
+        System.out.println("="+result);
+        
+    }
+    
+   
 
     public void print(String hi){System.out.println(hi);}
 }
